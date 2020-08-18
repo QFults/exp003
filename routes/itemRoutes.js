@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const { join } = require('path')
 const fs = require('fs')
+const uuid = require('uuid')
 
 // GET all items
 router.get('/items', (req, res) => {
@@ -17,12 +18,17 @@ router.post('/items', (req, res) => {
     if (err) { console.log(err) }
 
     let items = JSON.parse(data)
-    items.push(req.body)
+    let item = {
+      id: uuid.v1(),
+      text: req.body.text,
+      isDone: req.body.isDone
+    }
+    items.push(item)
 
     fs.writeFile(join(__dirname, '..', 'db', 'db.json'), JSON.stringify(items), err => {
       if (err) { console.log(err) }
 
-      res.sendStatus(200)
+      res.json(item)
     })
   })
 })
