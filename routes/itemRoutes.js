@@ -34,7 +34,7 @@ router.post('/items', (req, res) => {
 })
 
 // PUT one item
-router.put('/items/:text', (req, res) => {
+router.put('/items/:id', (req, res) => {
 
   fs.readFile(join(__dirname, '..', 'db', 'db.json'), 'utf8', (err, data) => {
     if (err) { console.log(err) }
@@ -42,7 +42,7 @@ router.put('/items/:text', (req, res) => {
     let items = JSON.parse(data)
 
     for (let i = 0; i < items.length; i++) {
-      if (items[i].text === req.params.text) {
+      if (items[i].id === req.params.id) {
         items[i].isDone = req.body.isDone
       }
     }
@@ -56,13 +56,13 @@ router.put('/items/:text', (req, res) => {
 })
 
 // DELETE one item
-router.delete('/items/:text', (req, res) => {
+router.delete('/items/:id', (req, res) => {
 
   fs.readFile(join(__dirname, '..', 'db', 'db.json'), 'utf8', (err, data) => {
     if (err) { console.log(err) }
 
     let items = JSON.parse(data)
-    items = items.filter(item => item.text !== req.params.text)
+    items = items.filter(item => item.id !== req.params.id)
 
     fs.writeFile(join(__dirname, '..', 'db', 'db.json'), JSON.stringify(items), err => {
       if (err) { console.log(err) }
